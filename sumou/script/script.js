@@ -50,7 +50,7 @@ const buttons = [nextButton, eatButton, trainingButton, practiceButton];
 
 nextButton.addEventListener('click', () => {
   exeImage.src = 'images/sumo_rikishi_white2.png';
-  infoDisp.textContent = '行動を選択してください';
+  infoDisp.textContent = '今週の行動を選択してください';
   toggleButton(buttons);
 });
 
