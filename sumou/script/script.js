@@ -1,3 +1,12 @@
+const infoDisp = document.querySelector('.info h2');
+const exeImage = document.querySelector('.exeImage img');
+
+const nextButton = document.querySelector('.next');
+const eatButton = document.querySelector('.eat');
+const trainingButton = document.querySelector('.training');
+const practiceButton = document.querySelector('.practice');
+const buttons = [nextButton, eatButton, trainingButton, practiceButton];
+
 class PracticeWrestler {
   constructor(name) {
     if (name.length === 0) {
@@ -19,34 +28,33 @@ class PracticeWrestler {
   }
   eat() {
     this.satiety += 2;
-    this.weight += 0.5;
+    this.weight = orgRound(this.weight + 0.5, 10);
     this.info = `ご飯を食べた!体重が0.5㎏増え、満腹度が2増えた`;
   }
   training() {
-    this.satiety -= 2;
-    this.weight += 0.2;
-    this.muscle += 0.2;
-    this.info = `トレーニングをした!筋肉量と体重が0.2㎏増え、満腹度が2減った`;
+    if (this.satiety > 2) {
+      this.satiety -= 2;
+      this.weight = orgRound(this.weight + 0.2, 10);
+      this.muscle = orgRound(this.weight + 0.2, 10);
+      this.info = `トレーニングをした!筋肉量と体重が0.2㎏増え、満腹度が2減った`;
+    } else {
+      this.info = `おなかが減って力がでない、、、トレーニングできなかった。`;
+      exeImage.src = './images/kodomosyokudou_hungry_boy.png';
+      this.protein();
+    }
   }
   practice() {
     console.log('稽古をした');
   }
   protein() {
-    console.log('栄養補給した');
+    this.info += `プロテインを摂取した。満腹度が1増えた`;
+    this.satiety += 1;
   }
 }
 
 p = new PracticeWrestler('トシ');
 
-const infoDisp = document.querySelector('.info h2');
-const exeImage = document.querySelector('.exeImage img');
 window.addEventListener('onload', statusDisp(p));
-
-const nextButton = document.querySelector('.next');
-const eatButton = document.querySelector('.eat');
-const trainingButton = document.querySelector('.training');
-const practiceButton = document.querySelector('.practice');
-const buttons = [nextButton, eatButton, trainingButton, practiceButton];
 
 nextButton.addEventListener('click', () => {
   exeImage.src = 'images/sumo_rikishi_white2.png';
@@ -82,4 +90,8 @@ function toggleButton(buttons) {
   for (i = 0; i < buttons.length; i++) {
     buttons[i].toggleAttribute('disabled');
   }
+}
+
+function orgRound(value, base) {
+  return Math.round(value * base) / base;
 }
