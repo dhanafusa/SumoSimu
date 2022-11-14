@@ -1,6 +1,10 @@
 const infoDisp = document.querySelector('.info h2');
 const exeImage = document.querySelector('.exeImage img');
 
+const playYear = document.querySelector('.year');
+const playMonth = document.querySelector('.month');
+const playWeek = document.querySelector('.week');
+
 const nextButton = document.querySelector('.next');
 const eatButton = document.querySelector('.eat');
 const trainingButton = document.querySelector('.training');
@@ -60,6 +64,17 @@ nextButton.addEventListener('click', () => {
   exeImage.src = 'images/sumo_rikishi_white2.png';
   infoDisp.textContent = '今週の行動を選択してください';
   toggleButton(buttons);
+  playWeek.textContent++;
+  if (playWeek.textContent > 4) {
+    playWeek.textContent = 1;
+    playMonth.textContent++;
+    if (playMonth.textContent > 12) {
+      playMonth.textContent = 1;
+    }
+  }
+  if (playWeek.textContent == 1 && playMonth.textContent == 4) {
+    playYear.textContent++;
+  }
 });
 
 eatButton.addEventListener('click', () => {
