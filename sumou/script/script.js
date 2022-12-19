@@ -1,3 +1,4 @@
+// 各種要素取得
 const infoDisp = document.querySelector('.info h2');
 const exeImage = document.querySelector('.exeImage img');
 
@@ -11,17 +12,19 @@ const trainingButton = document.querySelector('.training');
 const practiceButton = document.querySelector('.practice');
 const buttons = [nextButton, eatButton, trainingButton, practiceButton];
 
+// 力士クラス
 class PracticeWrestler {
   constructor(name) {
+    // コンストラクタ（インスタンス時に実行）
     if (name.length === 0) {
       this.name = 'トシ';
     } else {
       this.name = name;
     }
 
-    this.height = 0;
-    this.weight = 0;
-    this.satiety = 0;
+    this.height = 180;
+    this.weight = 70;
+    this.satiety = 5;
     if (Math.round(Math.random() * 20) === 0) {
       this.age = Math.round(Math.random() * 2) + 12;
     } else {
@@ -31,6 +34,7 @@ class PracticeWrestler {
     this.info = '';
   }
   eat() {
+    // 食事
     this.satiety += 2;
     this.weight = orgRound(this.weight + 0.5, 10);
     this.info = `ご飯を食べた!体重が0.5㎏増え、満腹度が2増えた`;
@@ -39,7 +43,7 @@ class PracticeWrestler {
     if (this.satiety > 2) {
       this.satiety -= 2;
       this.weight = orgRound(this.weight + 0.2, 10);
-      this.muscle = orgRound(this.weight + 0.2, 10);
+      this.muscle = orgRound(this.muscle + 0.2, 10);
       this.info = `トレーニングをした!筋肉量と体重が0.2㎏増え、満腹度が2減った`;
     } else {
       this.info = `おなかが減って力がでない、、、トレーニングできなかった。`;
@@ -48,18 +52,26 @@ class PracticeWrestler {
     }
   }
   practice() {
-    console.log('稽古をした');
+    // 稽古
+    this.satiety -= 4;
+    this.weight = orgRound(this.weight + 0.5, 10);
+    this.muscle = orgRound(this.muscle + 0.5, 10);
+    this.info = `稽古をした筋肉量と体重が0.5kg増え、満腹度が4減った`;
   }
   protein() {
+    // 満腹度が少ない状況で筋トレや稽古を行うと代わりに発動
     this.info += `プロテインを摂取した。満腹度が1増えた`;
     this.satiety += 1;
   }
 }
 
+// インスタンス化
 p = new PracticeWrestler('トシ');
 
+// ページがロードされたら実行
 window.addEventListener('onload', statusDisp(p));
 
+// 各種ボタンイベント
 nextButton.addEventListener('click', () => {
   exeImage.src = 'images/sumo_rikishi_white2.png';
   infoDisp.textContent = '今週の行動を選択してください';
@@ -93,6 +105,15 @@ trainingButton.addEventListener('click', () => {
   toggleButton(buttons);
 });
 
+practiceButton.addEventListener('click', () => {
+  exeImage.src = 'images/sumo_torikumi.png';
+  p.practice();
+  infoDisp.textContent = p.info;
+  statusDisp(p);
+  toggleButton(buttons);
+});
+
+// 各種関数
 function statusDisp(p) {
   const statusArr = [p.name, p.age, p.height, p.weight, p.muscle, p.satiety];
   const wrestlerStatus = document.querySelectorAll('.disp ul li');
